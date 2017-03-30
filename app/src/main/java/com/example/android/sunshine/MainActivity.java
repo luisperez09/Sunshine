@@ -69,13 +69,24 @@ public class MainActivity extends AppCompatActivity implements
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
         /*
-         * LinearLayoutManager can support HORIZONTAL or VERTICAL orientations. The reverse layout
-         * parameter is useful mostly for HORIZONTAL layouts that should reverse for right to left
-         * languages.
+         * A LinearLayoutManager is responsible for measuring and positioning item views within a
+         * RecyclerView into a linear list. This means that it can produce either a horizontal or
+         * vertical list depending on which parameter you pass in to the LinearLayoutManager
+         * constructor. In our case, we want a vertical list, so we pass in the constant from the
+         * LinearLayoutManager class for vertical lists, LinearLayoutManager.VERTICAL.
+         *
+         * There are other LayoutManagers available to display your data in uniform grids,
+         * staggered grids, and more! See the developer documentation for more details.
          */
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        int recyclerViewOrientation = LinearLayoutManager.VERTICAL;
 
+        /*
+         *  This value should be true if you want to reverse your layout. Generally, this is only
+         *  true with horizontal lists that need to support a right-to-left layout.
+         */
+        boolean shouldReverseLayout = false;
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, recyclerViewOrientation, shouldReverseLayout);
         mRecyclerView.setLayoutManager(layoutManager);
 
         /*
@@ -130,6 +141,8 @@ public class MainActivity extends AppCompatActivity implements
          * the last created loader is re-used.
          */
         getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
+
+        Log.d(TAG, "onCreate: registering preference changed listener");
     }
 
     /**
@@ -253,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements
      * open the Common Intents page
      */
     private void openLocationInMap() {
-
         String addressString = "1600 Ampitheatre Parkway, CA";
         Uri geoLocation = Uri.parse("geo:0,0?q=" + addressString);
 
@@ -309,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         /* Use AppCompatActivity's method getMenuInflater to get a handle on the menu inflater */
@@ -332,6 +343,12 @@ public class MainActivity extends AppCompatActivity implements
 
         if (id == R.id.action_map) {
             openLocationInMap();
+            return true;
+        }
+
+        if (id == R.id.action_settings) {
+            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(startSettingsActivity);
             return true;
         }
 
