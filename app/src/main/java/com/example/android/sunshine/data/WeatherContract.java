@@ -26,9 +26,6 @@ public class WeatherContract {
     /* Inner class that defines the table contents of the weather table */
     public static final class WeatherEntry implements BaseColumns {
 
-//      Do steps 2 through 10 within the WeatherEntry class
-
-
         /* Used internally as the name of our weather table. */
         public static final String TABLE_NAME = "weather";
 
