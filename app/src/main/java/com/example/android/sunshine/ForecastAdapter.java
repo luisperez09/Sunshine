@@ -33,7 +33,6 @@ import com.example.android.sunshine.utilities.SunshineWeatherUtils;
  */
 class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapterViewHolder> {
 
-
     /* The context we use to utility methods, app resources and layout inflaters */
     private final Context mContext;
 
@@ -49,7 +48,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      * The interface that receives onClick messages.
      */
     public interface ForecastAdapterOnClickHandler {
-        void onClick(String weatherForDay);
+        void onClick(long date);
     }
 
     private Cursor mCursor;
@@ -57,7 +56,7 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
     /**
      * Creates a ForecastAdapter.
      *
-     * @param context      Used to talk to the UI and app resources
+     * @param context Used to talk to the UI and app resources
      * @param clickHandler The on-click handler for this adapter. This single handler is called
      *                     when an item is clicked.
      */
@@ -101,7 +100,6 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
      */
     @Override
     public void onBindViewHolder(ForecastAdapterViewHolder forecastAdapterViewHolder, int position) {
-
         mCursor.moveToPosition(position);
 
 
@@ -178,8 +176,10 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
          */
         @Override
         public void onClick(View v) {
-            String weatherForDay = weatherSummary.getText().toString();
-            mClickHandler.onClick(weatherForDay);
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+            long dateInMillis = mCursor.getLong(MainActivity.INDEX_WEATHER_DATE);
+            mClickHandler.onClick(dateInMillis);
         }
     }
 }

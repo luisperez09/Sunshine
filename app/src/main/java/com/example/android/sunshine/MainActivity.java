@@ -15,7 +15,6 @@
  */
 package com.example.android.sunshine;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,7 +35,6 @@ import android.widget.ProgressBar;
 import com.example.android.sunshine.data.SunshinePreferences;
 import com.example.android.sunshine.data.WeatherContract;
 import com.example.android.sunshine.utilities.FakeDataUtils;
-
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -88,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_forecast);
         getSupportActionBar().setElevation(0f);
 
-
         FakeDataUtils.insertFakeData(this);
 
         /*
@@ -96,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements
          * do things like set the adapter of the RecyclerView and toggle the visibility.
          */
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
-
 
         /*
          * The ProgressBar that will indicate to the user that we are loading data. It will be
@@ -151,16 +147,12 @@ public class MainActivity extends AppCompatActivity implements
 
         showLoading();
 
-
-
-
         /*
          * Ensures a loader is initialized and active. If the loader doesn't already exist, one is
          * created and (if the activity/fragment is currently started) starts the loader. Otherwise
          * the last created loader is re-used.
          */
         getSupportLoaderManager().initLoader(ID_FORECAST_LOADER, null, this);
-
 
     }
 
@@ -231,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements
 
     /**
      * Called when a Loader has finished loading its data.
-     * <p>
+     *
      * NOTE: There is one small bug in this code. If no data is present in the cursor do to an
      * initial load being performed with no access to internet, the loading indicator will show
      * indefinitely, until data is present from the ContentProvider. This will be fixed in a
@@ -243,10 +235,10 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
+
         mForecastAdapter.swapCursor(data);
         if (mPosition == RecyclerView.NO_POSITION) mPosition = 0;
         mRecyclerView.smoothScrollToPosition(mPosition);
-
         if (data.getCount() != 0) showWeatherDataView();
     }
 
@@ -268,15 +260,15 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * This method is for responding to clicks from our list.
      *
-     * @param weatherForDay String describing weather details for a particular day
+     * @param date Normalized UTC time that represents the local date of the weather in GMT time.
+     * @see WeatherContract.WeatherEntry#COLUMN_DATE
      */
     @Override
-    public void onClick(String weatherForDay) {
-        Context context = this;
-        Class destinationClass = DetailActivity.class;
-        Intent intentToStartDetailActivity = new Intent(context, destinationClass);
-        intentToStartDetailActivity.putExtra(Intent.EXTRA_TEXT, weatherForDay);
-        startActivity(intentToStartDetailActivity);
+    public void onClick(long date) {
+        Intent weatherDetailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        Uri uriForDateClicked = WeatherContract.WeatherEntry.buildWeatherUriWithDate(date);
+        weatherDetailIntent.setData(uriForDateClicked);
+        startActivity(weatherDetailIntent);
     }
 
     /**
@@ -292,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements
         /* Finally, make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
-
 
     /**
      * This method will make the loading indicator visible and hide the weather View and error
@@ -312,8 +303,10 @@ public class MainActivity extends AppCompatActivity implements
      * This is where we inflate and set up the menu for this Activity.
      *
      * @param menu The options menu in which you place your items.
+     *
      * @return You must return true for the menu to be displayed;
-     * if you return false it will not be shown.
+     *         if you return false it will not be shown.
+     *
      * @see #onPrepareOptionsMenu
      * @see #onOptionsItemSelected
      */
@@ -331,6 +324,7 @@ public class MainActivity extends AppCompatActivity implements
      * Callback invoked when a menu item was selected from this Activity's menu.
      *
      * @param item The menu item that was selected by the user
+     *
      * @return true if you handle the menu click here, false otherwise
      */
     @Override
