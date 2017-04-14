@@ -95,14 +95,17 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         int layoutId;
 
         switch (viewType) {
+
             case VIEW_TYPE_TODAY: {
                 layoutId = R.layout.list_item_forecast_today;
                 break;
             }
+
             case VIEW_TYPE_FUTURE_DAY: {
                 layoutId = R.layout.forecast_list_item;
                 break;
             }
+
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
@@ -136,14 +139,17 @@ class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ForecastAdapt
         int viewType = getItemViewType(position);
 
         switch (viewType) {
+
             case VIEW_TYPE_TODAY:
                 weatherImageId = SunshineWeatherUtils
                         .getLargeArtResourceIdForWeatherCondition(weatherId);
                 break;
+
             case VIEW_TYPE_FUTURE_DAY:
                 weatherImageId = SunshineWeatherUtils
                         .getSmallArtResourceIdForWeatherCondition(weatherId);
                 break;
+
             default:
                 throw new IllegalArgumentException("Invalid view type, value of " + viewType);
         }
