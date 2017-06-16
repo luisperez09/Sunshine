@@ -52,13 +52,15 @@ public final class OpenWeatherJsonUtils {
     private static final String OWM_TEMPERATURE = "temp";
 
     /* Max temperature for the day */
-    private static final String OWM_MAX = "max";
-    private static final String OWM_MIN = "min";
+    private static final String OWM_MAX = "temp_max";
+    private static final String OWM_MIN = "temp_min";
 
     private static final String OWM_WEATHER = "weather";
     private static final String OWM_WEATHER_ID = "id";
 
     private static final String OWM_MESSAGE_CODE = "cod";
+    private static final String OWM_MAIN = "main";
+    private static final String OWM_WIND = "wind";
 
     /**
      * This method parses JSON from a web response and returns an array of Strings
@@ -69,9 +71,7 @@ public final class OpenWeatherJsonUtils {
      * now, we just convert the JSON into human-readable strings.
      *
      * @param forecastJsonStr JSON response from server
-     *
      * @return Array of Strings describing weather data
-     *
      * @throws JSONException If JSON data cannot be properly parsed
      */
     public static ContentValues[] getWeatherContentValuesFromJson(Context context, String forecastJsonStr)
@@ -140,10 +140,15 @@ public final class OpenWeatherJsonUtils {
              */
             dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * i;
 
-            pressure = dayForecast.getDouble(OWM_PRESSURE);
-            humidity = dayForecast.getInt(OWM_HUMIDITY);
-            windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
-            windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
+            JSONObject mainStats = dayForecast.getJSONObject(OWM_MAIN);
+            pressure = mainStats.getDouble(OWM_PRESSURE);
+            humidity = mainStats.getInt(OWM_HUMIDITY);
+            high = mainStats.getDouble(OWM_MAX);
+            low = mainStats.getDouble(OWM_MIN);
+
+            JSONObject windStats = dayForecast.getJSONObject(OWM_WIND);
+            windSpeed = windStats.getDouble(OWM_WINDSPEED);
+            windDirection = windStats.getDouble(OWM_WIND_DIRECTION);
 
             /*
              * Description is in a child array called "weather", which is 1 element long.
@@ -154,17 +159,6 @@ public final class OpenWeatherJsonUtils {
 
             weatherId = weatherObject.getInt(OWM_WEATHER_ID);
 
-            /*
-             * Temperatures are sent by Open Weather Map in a child object called "temp".
-             *
-             * Editor's Note: Try not to name variables "temp" when working with temperature.
-             * It confuses everybody. Temp could easily mean any number of things, including
-             * temperature, temporary variable, temporary folder, temporary employee, or many
-             * others, and is just a bad variable name.
-             */
-            JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-            high = temperatureObject.getDouble(OWM_MAX);
-            low = temperatureObject.getDouble(OWM_MIN);
 
             ContentValues weatherValues = new ContentValues();
             weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
