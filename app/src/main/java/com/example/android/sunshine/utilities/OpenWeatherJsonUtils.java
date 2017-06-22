@@ -152,7 +152,7 @@ public final class OpenWeatherJsonUtils {
              * We ignore all the datetime values embedded in the JSON and assume that
              * the values are returned in-order by day (which is not guaranteed to be correct).
              */
-            dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * i;
+            dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * dayIndex;
 
             JSONObject mainStats = dayForecast.getJSONObject(OWM_MAIN);
             pressure = mainStats.getDouble(OWM_PRESSURE);
