@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.sunshine.data.WeatherContract;
 import com.firebase.jobdispatcher.Constraint;
@@ -104,6 +105,7 @@ public class SunshineSyncUtils {
 
         /* Schedule the Job with the dispatcher */
         dispatcher.mustSchedule(syncSunshineJob);
+        Log.i("SunshineSyncUtils", "Job has been scheduled");
     }
 
     /**
@@ -119,9 +121,14 @@ public class SunshineSyncUtils {
          * Only perform initialization once per app lifetime. If initialization has already been
          * performed, we have nothing to do in this method.
          */
-        if (sInitialized) return;
+        if (sInitialized) {
+            Log.i("SunshineSyncUtils", "Already initialized");
+            return;
+        }
+
 
         sInitialized = true;
+        Log.i("SunshineSyncUtils", "Just initialized");
 
         /*
          * This method call triggers Sunshine to create its task to synchronize weather data
