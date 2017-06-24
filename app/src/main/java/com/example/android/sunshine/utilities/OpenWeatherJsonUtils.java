@@ -181,7 +181,8 @@ public final class OpenWeatherJsonUtils {
             boolean lastOfDay = dateText.toLowerCase().contains(LAST_FORECAST_TIME);
 
             // Add to array only after last forecast of the day has been compared
-            if (lastOfDay) {
+            // or if it is the last forecast available
+            if (lastOfDay || i == jsonWeatherArray.length() - 1) {
 
                 ContentValues weatherValues = new ContentValues();
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
