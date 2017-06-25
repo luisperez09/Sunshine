@@ -119,8 +119,30 @@
 
     <!-- The format of the notification we show when the weather is updated -->
     <string name="format_notification">
-        Pronóstico: <xliff:g id="condition">%1$s</xliff:g> -
-        Máx: <xliff:g id="high">%2$s</xliff:g>
+        Pronóstico: <xliff:g id="condition">%1$s</xliff:g> \n
+        Máx: <xliff:g id="high">%2$s</xliff:g> \n
         Mín: <xliff:g id="low">%3$s</xliff:g>
     </string>
+
+    <string name="about_text">Sunshine permite conocer el clima actual y el pronóstico a futuro de la ubicación de tu
+        preferencia, con información proveniente de los servidores públicos de OpenWeatherMap.</string>
+
+    <string name="dev_info_text">Para el desarrollo de Sunshine de utilizaron las siguientes herramientas del framework:\n
+        \u25CF RecyclerView \n
+        \u25CF Constraint Layout \n
+        \u25CF URL Networking \n
+        \u25CF JSON Parsing \n
+        \u25CF Preferences \n
+        \u25CF SQLite Open Helper \n
+        \u25CF Content Providers \n
+        \u25CF Intent Service \n
+        \u25CF Firebase Job Dispatcher \n
+        \u25CF Notifications \n
+        \u25CF Data Binding \n
+        \u25CF Responsive Design \n
+        \u25CF Localization \n
+        \u25CF Acessibility
+    </string>
+    <string name="dev_info_action">Info. de desarrollo</string>
+    <string name="action_about">Acerca de esta app</string>
 </resources>

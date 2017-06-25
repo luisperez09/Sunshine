@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +24,6 @@
   - an idea of exactly how they are used.                                                      -
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
-
 
 
     <!-- - - - - - - - - - - - - -
@@ -105,7 +103,6 @@
     <string name="pref_last_notification" translatable="false">last_notification</string>
 
 
-
     <!-- - - - - - - - - - - - - - -
       - Used by SunshineDateUtils  -
       - - - - - - - - - - - - - - -->
@@ -120,7 +117,6 @@
     <string name="format_full_friendly_date">
         <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
     </string>
-
 
 
     <!-- - - - - - - - - - - - - - - - -
@@ -218,7 +214,6 @@
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
 
-
     <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       - Used for Accessibility purposes (Accessibility == a11y)                            -
       -                                                                                    -
@@ -234,7 +229,6 @@
     <string name="a11y_wind">Wind speed and direction: <xliff:g id="wind">%1$s</xliff:g></string>
 
 
-
     <!-- Used by NotificationUtils -->
 
     <!-- The format of the notification we show when the weather is updated -->
@@ -242,6 +236,30 @@
         Forecast: <xliff:g id="condition">%1$s</xliff:g> -
         High: <xliff:g id="high">%2$s</xliff:g>
         Low: <xliff:g id="low">%3$s</xliff:g>
+    </string>
+
+    <string name="action_about">About this app</string>
+    <string name="about_text">
+        Sunshine allows you to check the current weather and the forecast for your preferred location,
+        leveraging live data provided by the OpenWeatherMap public servers.
+    </string>
+
+    <string name="dev_info_action">Dev. info</string>
+    <string name="dev_info_text">In order to develop Sunshine, the following framework tools were used:\n
+        \u25CF RecyclerView \n
+        \u25CF Constraint Layout \n
+        \u25CF URL Networking \n
+        \u25CF JSON Parsing \n
+        \u25CF Preferences \n
+        \u25CF SQLite Open Helper \n
+        \u25CF Content Providers \n
+        \u25CF Intent Service \n
+        \u25CF Firebase Job Dispatcher \n
+        \u25CF Notifications \n
+        \u25CF Data Binding \n
+        \u25CF Responsive Design \n
+        \u25CF Localization \n
+        \u25CF Accessibility
     </string>
 
 </resources>
