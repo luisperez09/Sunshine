@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Sunshine</string>
+    <string name="action_map">Ubicación en el mapa</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_refresh">Actualizar datos</string>
+    <string name="action_settings">Configuración</string>
+    <string name="condition_2xx">Tormenta</string>
+    <string name="condition_3xx">Llovizna</string>
+    <string name="condition_500">Lluvia ligera</string>
+    <string name="condition_501">Lluvia moderada</string>
+    <string name="condition_502">Lluvia fuerte</string>
+    <string name="condition_503">Lluvia intensa</string>
+    <string name="condition_504">Lluvia extrema</string>
+    <string name="condition_511">Lluvia helada</string>
+    <string name="condition_520">Chubascos ligeros</string>
+    <string name="condition_521">Chubascos</string>
+    <string name="condition_522">Chubascos fuertes</string>
+    <string name="condition_531">Chubascos irregulares</string>
+    <string name="condition_600">Nevada ligera</string>
+    <string name="condition_601">Nevada</string>
+    <string name="condition_602">Nevada fuerte</string>
+    <string name="condition_611">Aguanieve</string>
+    <string name="condition_612">Chubascos de aguanieve</string>
+    <string name="condition_615">Lluvia y nieve</string>
+    <string name="condition_616">Lluvia y nieve</string>
+    <string name="condition_620">Chubascos de nieve</string>
+    <string name="condition_621">Chubascos de nieve</string>
+    <string name="condition_622">Chubascos de nieve</string>
+    <string name="condition_701">Neblina</string>
+    <string name="condition_711">Humo</string>
+    <string name="condition_721">Calina</string>
+    <string name="condition_741">Niebla</string>
+    <string name="condition_731">Arena,  Polvo</string>
+    <string name="condition_751">Arena</string>
+    <string name="condition_761">Polvo</string>
+    <string name="condition_762">Ceniza volcánica</string>
+    <string name="condition_771">Ráfagas</string>
+    <string name="condition_781">Tornado</string>
+    <string name="condition_800">Despejado</string>
+    <string name="condition_801">Muy despejado</string>
+    <string name="condition_802">Nubes dispersas</string>
+    <string name="condition_803">Muy nublado</string>
+    <string name="condition_804">Nublado</string>
+    <string name="condition_900">Tornado</string>
+    <string name="condition_901">Tormenta tropical</string>
+    <string name="condition_902">Huracán</string>
+    <string name="condition_903">Muy frío</string>
+    <string name="condition_904">Mucho calor</string>
+    <string name="condition_905">Vientos</string>
+    <string name="condition_906">Granizo</string>
+    <string name="condition_951">Calmado</string>
+    <string name="condition_952">Brisa ligera</string>
+    <string name="condition_953">Brisa suave</string>
+    <string name="condition_954">Brisa</string>
+    <string name="condition_955">Brisa fresca</string>
+    <string name="condition_956">Brisa fuerte</string>
+    <string name="condition_957">Vientos fuertes</string>
+    <string name="condition_958">Vendaval</string>
+    <string name="condition_959">Vendaval severo</string>
+    <string name="condition_960">Tormenta</string>
+    <string name="condition_961">Tormenta violenta</string>
+    <string name="condition_962">Huracán</string>
+    <string name="condition_unknown">Desconocido (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
+    <string name="humidity_label">Humedad</string>
+    <string name="pref_enable_notifications_false">Deshabilitadas</string>
+    <string name="pref_enable_notifications_label">Notificaciones</string>
+    <string name="pref_enable_notifications_true">Habilitadas</string>
+    <string name="pref_location_label">Ubicación</string>
+    <string name="pref_units_label">Sistema de unidades</string>
+    <string name="pref_units_label_imperial">Imperial</string>
+    <string name="pref_units_label_metric">Métrico</string>
+    <string name="pressure_label">Presión</string>
+    <string name="title_activity_detail">Detalles</string>
+    <string name="title_activity_settings">Configuración</string>
+    <string name="today">Hoy</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="wind_label">Viento</string>
+
+    <string name="a11y_forecast">Pronóstico: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_forecast_icon">Ícono del pronóstico: <xliff:g id="condition">%1$s</xliff:g></string>
+    <string name="a11y_high_temp">Máximo: <xliff:g id="high">%1$s</xliff:g></string>
+    <string name="a11y_low_temp">Mínimo: <xliff:g id="low">%1$s</xliff:g></string>
+    <string name="a11y_humidity">Humedad: <xliff:g id="humidity">%1$s</xliff:g></string>
+    <string name="a11y_pressure">Presión barométrica: <xliff:g id="pressure">%1$s</xliff:g></string>
+    <string name="a11y_wind">Dirección y velocidad del viento: <xliff:g id="wind">%1$s</xliff:g></string>
+
+    <!-- Date format -->
+    <string name="format_full_friendly_date">
+        <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
+    </string>
+
+    <!-- Temperature format -->
+    <string name="format_temperature">
+        <xliff:g id="temp">%1.0f</xliff:g>\u00B0
+    </string>
+
+    <!-- Wind in kph -->
+    <string name="format_wind_kmh">
+        <xliff:g id="speed">%1$1.0f</xliff:g> km/h
+        <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+    <!-- Wind in mph -->
+    <string name="format_wind_mph">
+        <xliff:g id="speed">%1$1.0f</xliff:g> mph
+        <xliff:g id="direction">%2$s</xliff:g>
+    </string>
+
+    <!-- Pressure format -->
+    <string name="format_pressure">
+        <xliff:g id="pressure">%1.0f</xliff:g> hPa
+    </string>
+
+    <!-- Humidity format -->
+    <string name="format_humidity">
+        <xliff:g id="humidity">%1.0f</xliff:g> %%
+    </string>
+
+    <!-- The format of the notification we show when the weather is updated -->
+    <string name="format_notification">
+        Pronóstico: <xliff:g id="condition">%1$s</xliff:g> \n
+        Máx: <xliff:g id="high">%2$s</xliff:g> \n
+        Mín: <xliff:g id="low">%3$s</xliff:g>
+    </string>
+
+    <string name="about_text">Sunshine permite conocer el clima actual y el pronóstico a futuro de la ubicación de tu
+        preferencia, con información proveniente de los servidores públicos de OpenWeatherMap.</string>
+
+    <string name="dev_info_text">Para el desarrollo de Sunshine de utilizaron las siguientes herramientas del framework:\n
+        \u25CF RecyclerView \n
+        \u25CF Constraint Layout \n
+        \u25CF URL Networking \n
+        \u25CF JSON Parsing \n
+        \u25CF Preferences \n
+        \u25CF SQLite Open Helper \n
+        \u25CF Content Providers \n
+        \u25CF Intent Service \n
+        \u25CF Firebase Job Dispatcher \n
+        \u25CF Notifications \n
+        \u25CF Data Binding \n
+        \u25CF Responsive Design \n
+        \u25CF Localization \n
+        \u25CF Acessibility
+    </string>
+    <string name="dev_info_action">Info. de desarrollo</string>
+    <string name="action_about">Acerca de esta app</string>
+</resources>

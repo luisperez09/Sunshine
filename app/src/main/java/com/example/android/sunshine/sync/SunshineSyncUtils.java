@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.android.sunshine.data.WeatherContract;
 import com.firebase.jobdispatcher.Constraint;
@@ -28,6 +29,7 @@ import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
 import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
 
 import java.util.concurrent.TimeUnit;
@@ -48,6 +50,7 @@ public class SunshineSyncUtils {
 
     /**
      * Schedules a repeating sync of Sunshine's weather data using FirebaseJobDispatcher.
+     *
      * @param context Context used to create the GooglePlayDriver that powers the
      *                FirebaseJobDispatcher
      */
@@ -93,12 +96,18 @@ public class SunshineSyncUtils {
                  * the old one.
                  */
                 .setReplaceCurrent(true)
+                /*
+                * How often we want to retry job in case of failure
+                * */
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
                 /* Once the Job is ready, call the builder's build method to return the Job */
                 .build();
 
         /* Schedule the Job with the dispatcher */
-        dispatcher.schedule(syncSunshineJob);
+        dispatcher.mustSchedule(syncSunshineJob);
+        Log.i("SunshineSyncUtils", "Job has been scheduled");
     }
+
     /**
      * Creates periodic sync tasks and checks to see if an immediate sync is required. If an
      * immediate sync is required, this method will take care of making sure that sync occurs.
@@ -112,9 +121,14 @@ public class SunshineSyncUtils {
          * Only perform initialization once per app lifetime. If initialization has already been
          * performed, we have nothing to do in this method.
          */
-        if (sInitialized) return;
+        if (sInitialized) {
+            Log.i("SunshineSyncUtils", "Already initialized");
+            return;
+        }
+
 
         sInitialized = true;
+        Log.i("SunshineSyncUtils", "Just initialized");
 
         /*
          * This method call triggers Sunshine to create its task to synchronize weather data

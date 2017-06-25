@@ -1,5 +1,6 @@
 package com.example.android.sunshine.utilities;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -103,11 +104,13 @@ public class NotificationUtils {
              * forecast.
              */
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                    .setColor(ContextCompat.getColor(context,R.color.colorPrimary))
+                    .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                     .setSmallIcon(smallArtResourceId)
                     .setLargeIcon(largeIcon)
                     .setContentTitle(notificationTitle)
                     .setContentText(notificationText)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText))
+                    .setPriority(Notification.PRIORITY_HIGH)
                     .setAutoCancel(true);
 
             /*

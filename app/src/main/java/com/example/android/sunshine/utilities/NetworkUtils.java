@@ -54,7 +54,9 @@ public final class NetworkUtils {
     private static final String STATIC_WEATHER_URL =
             "https://andfun-weather.udacity.com/staticweather";
 
-    private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
+    private static final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast";
+
+    private static final String API_KEY = "973e9b260d9d4a814b40333479200509";
 
     /*
      * NOTE: These values only effect responses from OpenWeatherMap, NOT from the fake weather
@@ -68,7 +70,7 @@ public final class NetworkUtils {
     /* The units we want our API to return */
     private static final String units = "metric";
     /* The number of days we want our API to return */
-    private static final int numDays = 14;
+    private static final int numDays = 40;
 
     /* The query parameter allows us to provide a location string to the API */
     private static final String QUERY_PARAM = "q";
@@ -82,6 +84,8 @@ public final class NetworkUtils {
     private static final String UNITS_PARAM = "units";
     /* The days parameter allows us to designate how many days of weather data we want */
     private static final String DAYS_PARAM = "cnt";
+
+    private static final String API_KEY_PARAM = "APPID";
 
     /**
      * Retrieves the proper URL to query for the weather data. The reason for both this method as
@@ -128,7 +132,7 @@ public final class NetworkUtils {
 
         try {
             URL weatherQueryUrl = new URL(weatherQueryUri.toString());
-            Log.v(TAG, "URL: " + weatherQueryUrl);
+            Log.e(TAG, "URL: " + weatherQueryUrl);
             return weatherQueryUrl;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -149,11 +153,12 @@ public final class NetworkUtils {
                 .appendQueryParameter(FORMAT_PARAM, format)
                 .appendQueryParameter(UNITS_PARAM, units)
                 .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                .appendQueryParameter(API_KEY_PARAM, API_KEY)
                 .build();
 
         try {
             URL weatherQueryUrl = new URL(weatherQueryUri.toString());
-            Log.v(TAG, "URL: " + weatherQueryUrl);
+            Log.e(TAG, "URL: " + weatherQueryUrl);
             return weatherQueryUrl;
         } catch (MalformedURLException e) {
             e.printStackTrace();

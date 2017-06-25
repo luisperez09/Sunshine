@@ -52,13 +52,26 @@ public final class OpenWeatherJsonUtils {
     private static final String OWM_TEMPERATURE = "temp";
 
     /* Max temperature for the day */
-    private static final String OWM_MAX = "max";
-    private static final String OWM_MIN = "min";
+    private static final String OWM_MAX = "temp_max";
+    private static final String OWM_MIN = "temp_min";
 
     private static final String OWM_WEATHER = "weather";
     private static final String OWM_WEATHER_ID = "id";
 
     private static final String OWM_MESSAGE_CODE = "cod";
+    private static final String OWM_MAIN = "main";
+    private static final String OWM_WIND = "wind";
+    private static final String OWM_DT_TXT = "dt_txt";
+    private static final String LAST_FORECAST_TIME = "21:00:00";
+
+    /**
+     * Checks highest temperature of current day in the loop
+     */
+    private static Double currentHigh = null;
+    /**
+     * Checks highest temperature of current day in the loop
+     */
+    private static Double currentLow = null;
 
     /**
      * This method parses JSON from a web response and returns an array of Strings
@@ -69,9 +82,7 @@ public final class OpenWeatherJsonUtils {
      * now, we just convert the JSON into human-readable strings.
      *
      * @param forecastJsonStr JSON response from server
-     *
      * @return Array of Strings describing weather data
-     *
      * @throws JSONException If JSON data cannot be properly parsed
      */
     public static ContentValues[] getWeatherContentValuesFromJson(Context context, String forecastJsonStr)
@@ -105,7 +116,9 @@ public final class OpenWeatherJsonUtils {
 
         SunshinePreferences.setLocationDetails(context, cityLatitude, cityLongitude);
 
-        ContentValues[] weatherContentValues = new ContentValues[jsonWeatherArray.length()];
+        // Array contiene 8 predicciones por día, el objeto ContentValues tendrá como tamaño 1
+        // por cada día más 1 adicional para el día fraccionado
+        ContentValues[] weatherContentValues = new ContentValues[jsonWeatherArray.length() / 8 + 1];
 
         /*
          * OWM returns daily forecasts based upon the local time of the city that is being asked
@@ -117,7 +130,8 @@ public final class OpenWeatherJsonUtils {
 //        long normalizedUtcStartDay = SunshineDateUtils.normalizeDate(now);
 
         long normalizedUtcStartDay = SunshineDateUtils.getNormalizedUtcDateForToday();
-
+        // contador de días para referenciar dentro del array del ContentValues
+        int dayIndex = 0;
         for (int i = 0; i < jsonWeatherArray.length(); i++) {
 
             long dateTimeMillis;
@@ -138,12 +152,20 @@ public final class OpenWeatherJsonUtils {
              * We ignore all the datetime values embedded in the JSON and assume that
              * the values are returned in-order by day (which is not guaranteed to be correct).
              */
-            dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * i;
+            dateTimeMillis = normalizedUtcStartDay + SunshineDateUtils.DAY_IN_MILLIS * dayIndex;
 
-            pressure = dayForecast.getDouble(OWM_PRESSURE);
-            humidity = dayForecast.getInt(OWM_HUMIDITY);
-            windSpeed = dayForecast.getDouble(OWM_WINDSPEED);
-            windDirection = dayForecast.getDouble(OWM_WIND_DIRECTION);
+            JSONObject mainStats = dayForecast.getJSONObject(OWM_MAIN);
+            pressure = mainStats.getDouble(OWM_PRESSURE);
+            humidity = mainStats.getInt(OWM_HUMIDITY);
+            high = mainStats.getDouble(OWM_MAX);
+            low = mainStats.getDouble(OWM_MIN);
+            compareAndSetHigh(high);
+            compareAndSetLow(low);
+
+
+            JSONObject windStats = dayForecast.getJSONObject(OWM_WIND);
+            windSpeed = windStats.getDouble(OWM_WINDSPEED);
+            windDirection = windStats.getDouble(OWM_WIND_DIRECTION);
 
             /*
              * Description is in a child array called "weather", which is 1 element long.
@@ -154,31 +176,56 @@ public final class OpenWeatherJsonUtils {
 
             weatherId = weatherObject.getInt(OWM_WEATHER_ID);
 
-            /*
-             * Temperatures are sent by Open Weather Map in a child object called "temp".
-             *
-             * Editor's Note: Try not to name variables "temp" when working with temperature.
-             * It confuses everybody. Temp could easily mean any number of things, including
-             * temperature, temporary variable, temporary folder, temporary employee, or many
-             * others, and is just a bad variable name.
-             */
-            JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
-            high = temperatureObject.getDouble(OWM_MAX);
-            low = temperatureObject.getDouble(OWM_MIN);
+            // Check if current forecast is last of the day
+            String dateText = dayForecast.getString(OWM_DT_TXT);
+            boolean lastOfDay = dateText.toLowerCase().contains(LAST_FORECAST_TIME);
 
-            ContentValues weatherValues = new ContentValues();
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, high);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, low);
-            weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+            // Add to array only after last forecast of the day has been compared
+            // or if it is the last forecast available
+            if (lastOfDay || i == jsonWeatherArray.length() - 1) {
 
-            weatherContentValues[i] = weatherValues;
+                ContentValues weatherValues = new ContentValues();
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATE, dateTimeMillis);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_HUMIDITY, humidity);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_PRESSURE, pressure);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DEGREES, windDirection);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MAX_TEMP, currentHigh);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_MIN_TEMP, currentLow);
+                weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+
+                weatherContentValues[dayIndex] = weatherValues;
+                // Saltamos al siguiente día y reseteamos los valores máximos y mínimos
+                dayIndex++;
+                currentHigh = null;
+                currentLow = null;
+            }
         }
 
         return weatherContentValues;
+    }
+
+    /**
+     * Compara la temperatura máxima de la predicción actual con la máxima registrada del día actual
+     * y setea la más alta como la máxima del día
+     *
+     * @param high temperatura máxima de la predicción actual
+     */
+    private static void compareAndSetHigh(Double high) {
+        if (currentHigh == null || currentHigh < high) {
+            currentHigh = high;
+        }
+    }
+
+    /**
+     * Compara la temperatura mínima de la predicción actual con la mínima registrada del día actual
+     * y setea la más baja como la mínima del día
+     *
+     * @param low temperatura mínima de la predicción actual
+     */
+    private static void compareAndSetLow(Double low) {
+        if (currentLow == null || currentLow > low) {
+            currentLow = low;
+        }
     }
 }
